@@ -30,4 +30,7 @@ class People(db.Model):
             "coalition" : self.coalition,
             "race" : self.race,
             "age" : self.age,
+            "planet_id" : self.planet_id,
+            "planets" : self.planets,
+            "favorites" : self.favorites,
         }

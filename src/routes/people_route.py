@@ -15,9 +15,30 @@ def get_all_characters():
     return jsonify(list_character), 200
 
 
-@people_bp.route('/people', methods=['GET'])
-def get_all_characters():
-    characters = People.query.all()
-    return jsonify([char.serialize() for char in characters]), 200
+@people_bp.route('/<int:people_id>', methods=['GET'])
+def get_person_by_id(people_id):
+    person = People.query.get_or_404(people_id)
+    return jsonify(person.serialize()), 200
 
 
+@people_bp.route('/', methods=['POST'])
+def create_person():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "No JSON data provided"}), 400
+
+    try:
+        new_people = People(
+            people_name=data.get("name"),
+            film_appearance=data.get("film_api"),
+            exploded=data.get("exploded"),
+            population=data.get("population")
+        )
+
+        db.session.add(new_people)
+        db.session.commit()
+        return jsonify(new_people.serialize()), 201
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
