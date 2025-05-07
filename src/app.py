@@ -9,6 +9,7 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, User, Favorite
+from routes import people
 #from models import Person
 
 app = Flask(__name__)
