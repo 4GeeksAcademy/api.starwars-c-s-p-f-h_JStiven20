@@ -1,5 +1,5 @@
 from .database import db
-from sqlalchemy import String
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import List, TYPE_CHECKING
 
@@ -15,9 +15,19 @@ class People(db.Model):
     coalition: Mapped[str] = mapped_column(String(120), nullable=False)
     race: Mapped[str] = mapped_column(String(120), nullable=False)
     age: Mapped[int] = mapped_column(nullable=False)
+    planet_id: Mapped[int] = mapped_column(ForeignKey('planets.id'),nullable=True)
     planets: Mapped['Planet'] = relationship(
-        back_populates="person",
+        back_populates="people",
     )
     favorite: Mapped[List["Favorite"]] = relationship(
         back_populates="people",
     )
+
+    def serialize (self):
+        return {
+            "id" : self.id,
+            "person_name" : self.person_name,
+            "coalition" : self.coalition,
+            "race" : self.race,
+            "age" : self.age,
+        }

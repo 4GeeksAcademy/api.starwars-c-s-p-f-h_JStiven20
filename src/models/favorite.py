@@ -13,7 +13,7 @@ class Favorite(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id:Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     planet_id:Mapped[int] = mapped_column(ForeignKey("planets.id"), nullable=True)
-    pperson_id:Mapped[int] = mapped_column(ForeignKey("people.id"), nullable=True)    
+    person_id:Mapped[int] = mapped_column(ForeignKey("people.id"), nullable=True)    
     user: Mapped['User'] = relationship(
         back_populates="favorite",
     )

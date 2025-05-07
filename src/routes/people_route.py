@@ -2,25 +2,22 @@ from flask import Blueprint, jsonify, request
 from models import db, People, Favorite
 from .people_route import get_all_people
 
-planets_bp = Blueprint("planets", __name__, url_prefix="/planets")
+people_bp = Blueprint("people", __name__, url_prefix="/people")
+"""
+Pendiente el post y get individual
+"""
 
-@planets_bp.route("/", methods=["GET"])
-def get_all_planets():
-    list_planets = Planet.get_planets(False)
-    return jsonify(list_planets)
 
-@planets_bp.route("/", methods=["POST"])
-def create_planet():
-    data_request = request.get_json()
-    if not "planet_name" in data_request or not "population" in data_request:
-        return jsonify({"error": "Los siguientes campos son requeridos"})
+@people_bp.route('/people', methods=['GET'])
+def get_all_characters():
+    characters = People.query.all()
+    list_character = [char.serialize() for char in characters]
+    return jsonify(list_character), 200
 
-    planet_id = data_request["planet_id"]
-    planet = Planet.query.get_or_404(planet_id)
 
-    new_planet = Planet(
-        planet_name=data_request["name"],
-        film_appearance=data_request["film_api"],
-        exploded=data_request["exploded"],
-        population=data_request["population"]
-    )
+@people_bp.route('/people', methods=['GET'])
+def get_all_characters():
+    characters = People.query.all()
+    return jsonify([char.serialize() for char in characters]), 200
+
+
